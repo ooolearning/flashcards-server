@@ -1,0 +1,11 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "module": "commonjs",
+    "outDir": "build/"
+  },
+  "exclude": [
+    "node_modules",
+    "build"
+  ]
+}
