@@ -38,7 +38,11 @@ const query = async (_query: string | mysql.QueryOptions, _arr: any[]) => await 
   const con = connection()
   con.query(_query, _arr, (error, results, fields) => {
     log(results)
-    error ? reject(error) : resolve(true)
+    if (error) {
+      reject(error)
+    } else {
+      resolve(true)
+    }
   })
   con.end()
 })
@@ -47,7 +51,11 @@ const queryOne = async (_query: string | mysql.QueryOptions, _arr: any[]) => awa
   const con = connection()
   con.query(_query, _arr, (error, results, fields) => {
     log(results[0])
-    error ? reject(error) : resolve(results[0])
+    if (error) {
+      reject(error)
+    } else {
+      resolve(results[0])
+    }
   })
   con.end()
 })
@@ -56,7 +64,11 @@ const queryAll = async (_query: string | mysql.QueryOptions, _arr: any[]) => awa
   const con = connection()
   con.query(_query, _arr, (error, results, fields) => {
     log(results)
-    error ? reject(error) : resolve(results)
+    if (error) {
+      reject(error)
+    } else {
+      resolve(results)
+    }
   })
   con.end()
 })
