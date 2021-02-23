@@ -112,12 +112,12 @@ app.post('/user/login', (req: CustomRequest, res) => {
     if (!email) throw 'Invalid email'
     if (!password) throw 'Invalid password'
     queryOne('select * from user where email = ? and password = sha1(?)', [email, password])
-      .then((d: Object) => {
+      .then((d: object) => {
         if (d === undefined) throw 'Wrong email or password'
         const token = jwt.sign({ ...d }, process.env.SECRET, { expiresIn: 300 })
         res.status(200).json({ token })
       })
-      .catch((e: Object) => {
+      .catch((e: object) => {
         log(e)
         res.status(400).json({ message: e })
       })
@@ -136,11 +136,11 @@ app.post('/user/create', (req: CustomRequest, res) => {
     if (!email) throw 'Invalid email'
     if (!password) throw 'Invalid password'
     query('insert into user (name, email, password) values (?, ?, sha1(?))', [name, email, password])
-      .then((d: Object) => {
+      .then((d: object) => {
         if (!d) throw 'Error'
         res.status(201).json({ message: 'User created' })
       })
-      .catch((e: Object) => {
+      .catch((e: object) => {
         log(e)
         res.status(400).json({ message: e })
       })
@@ -157,8 +157,8 @@ app.post('/todo/all', verifyJWT, (req: CustomRequest, res) => {
   log('/todo/all')
   const user_id = req.user.id
   queryAll('select * from todo where user_id = ? order by favorite asc', [user_id])
-    .then((d: Object) => res.status(200).json({ todos: d }))
-    .catch((e: Object) => {
+    .then((d: object) => res.status(200).json({ todos: d }))
+    .catch((e: object) => {
       log(e)
       res.status(400).json({ message: e })
     })
@@ -170,8 +170,8 @@ app.post('/todo/favorite', verifyJWT, (req: CustomRequest, res) => {
   const user_id = req.user.id
   const { id }: { id: string } = Object(req.body)
   query('update todo set favorite = \'true\' where user_id = ? and id = ?', [user_id, id])
-    .then((d: Object) => res.status(200).json({ message: 'Todo favorited' }))
-    .catch((e: Object) => {
+    .then((d: object) => res.status(200).json({ message: 'Todo favorited' }))
+    .catch((e: object) => {
       log(e)
       res.status(400).json({ message: e })
     })
@@ -183,8 +183,8 @@ app.post('/todo/unfavorite', verifyJWT, (req: CustomRequest, res) => {
   const user_id = req.user.id
   const { id }: { id: string } = Object(req.body)
   query('update todo set favorite = \'false\' where user_id = ? and id = ?', [user_id, id])
-    .then((d: Object) => res.status(200).json({ message: 'Todo unfavorited' }))
-    .catch((e: Object) => {
+    .then((d: object) => res.status(200).json({ message: 'Todo unfavorited' }))
+    .catch((e: object) => {
       log(e)
       res.status(400).json({ message: e })
     })
@@ -196,8 +196,8 @@ app.post('/todo/delete', verifyJWT, (req: CustomRequest, res) => {
   const user_id = req.user.id
   const { id }: { id: string } = Object(req.body)
   query('delete from todo where user_id = ? and id = ?', [user_id, id])
-    .then((d: Object) => res.status(200).json({ message: 'Todo deleted' }))
-    .catch((e: Object) => {
+    .then((d: object) => res.status(200).json({ message: 'Todo deleted' }))
+    .catch((e: object) => {
       log(e)
       res.status(400).json({ message: e })
     })
@@ -209,8 +209,8 @@ app.post('/todo/create', verifyJWT, (req: CustomRequest, res) => {
   const user_id = req.user.id
   const { title, text }: { title: string, text: string } = Object(req.body)
   query('insert into todo (title, text, user_id) values (?, ?, ?)', [title, text, user_id])
-    .then((d: Object) => res.status(201).json({ message: 'Todo created' }))
-    .catch((e: Object) => {
+    .then((d: object) => res.status(201).json({ message: 'Todo created' }))
+    .catch((e: object) => {
       log(e)
       res.status(400).json({ message: e })
     })
